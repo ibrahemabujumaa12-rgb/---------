@@ -1,0 +1,390 @@
+<!DOCTYPE html><meta charset="UTF-8"> <head> <title id='Title'></title> </head>
+<style>
+    @font-face {
+        font-family: 'HP Simplified';
+        src: url('hpsimplified_rg-webfont.ttf');
+    }
+
+    body {
+        font-family: 'HP Simplified';
+    }
+
+    td.AlignCenter {
+        border: 1px solid black;
+        text-align: center;
+        word-wrap: break-word;
+    }
+
+    td.AlignLeft {
+        margin-left: 1em;
+    }
+
+    td.AlignLeftFontSize {
+        margin-left: 1em;
+        font-size: 9px;
+    }
+
+    .passed {
+        background-color: #C6EFCE;
+    }
+
+    .failed {
+        background-color: #ff3300;
+    }
+
+    th {
+        border: 1px solid black;
+        padding-left: 5px;
+    }
+
+    table {
+        border: 1px solid black;
+        width: 800px;
+        border-collapse: collapse;
+        table-layout: fixed;
+    }
+
+    tr.Overlap {
+        word-wrap: break-word;
+    }
+
+    tr.uefiBlue {
+        background-color: #0096D5;
+        color: #fff;
+        word-wrap: break-word;
+    }
+</style>
+<script type="text/javascript">
+
+    function Begin() {
+
+        var desiredWidth = window.outerWidth;
+
+        var headerHeight = (document.getElementById("mainNav") || {}).offsetHeight;
+        var windowHeight = window.innerHeight;
+
+        AppendData();
+
+        var platformInfoElem = document.getElementById("tablesContainer");
+
+        var elemHeight = document.getElementById("PlatformInfo").offsetHeight;
+
+        var otherHeight = document.getElementById("productInfoContainer").clientHeight;
+
+        var desiredHeight = windowHeight - headerHeight - (elemHeight - platformInfoElem.offsetHeight) - 75;
+
+        platformInfoElem.style.width = desiredWidth;
+        platformInfoElem.style.height = desiredHeight + "px";
+    }
+
+    function AppendData() {
+        var data = [{"Id":"e7d2b1a9-5f4c-4823-a91d-6b3c5e8f2a14","ToolName":"Initial Discovery","ToolVersion":"3.1.1.0 (3.1.1.0)","Instance":"","FormattedStartTime":"14/07/2026 11:09:15 am","FormattedStopTime":"14/07/2026 11:09:15 am","FormattedResult":"ExecutionPassed","FailureId":"","ErrorCode":"","FormattedElapsedTime":"0:0:0:0","LogData":"Initial Discovery completed. ","Record":null},{"Id":"b088469f-b159-4d7e-b4f9-0f1ed77a95aa","ToolName":"Battery Health Monitor","ToolVersion":"1.20.0.0 (3.1.1.0)","Instance":"AE03041XL - Primary","FormattedStartTime":"14/07/2026 9:22:17 am","FormattedStopTime":"14/07/2026 9:22:52 am","FormattedResult":"ExecutionPassed","FailureId":"","ErrorCode":"","FormattedElapsedTime":"0:0:0:35","LogData":"ToolError = 0\r\nIsCancelled = False\r\nForceCancelToPass = False\r\nNumberOfBatteriesFound = 1\r\n\r\nBattery 0 -----------------------------------------------------------\r\nFileName = C:\\ProgramData\\Hewlett-Packard\\HP Support Framework\\Resources\\Temp\\RawDumpForBattery0.xml\r\nIndex = 0\r\nInstanceId = 1\r\nLastFullChargeCapacity = 3680\r\nDesignCapacity = 3648\r\nChargeCapacity = 100 %\r\nRemainingCapacity = 3253\r\nMaxError = 1\r\nCycleCount = 50\r\nTemperature = 28\r\nCurrent = 62728\r\nDesignVoltage = 11250\r\nCellVoltage1 = 4043\r\nCellVoltage2 = 4036\r\nCellVoltage3 = 4066\r\nCellVoltage4 = 0\r\nSerialNumber = 33455 04/17/2025\r\nManufacturer = 333-17-32-A\r\nCTLabel = 6TALP0IWYKVPTB\r\nBHM = NA\r\nBCF = NA\r\nABO = Enabled\r\nABOS = Not Activated\r\nNonHP = 0\r\nRecalled = 0\r\nToolError = 0\r\n","Record":null}];
+        var platform = {"AgentSession":"","CsoSession":"","ExeName":""};
+        var systemInfo = {"Manufacturer":"HP","Model":"HP Laptop 15-fd0xxx","System ID":"8CAD","Product ID":"9W848EA#ABT","Memory Size":"16384 MB RAM","BIOS Date":"03/07/2025","BIOS Revision":"F.16","Serial Number":"5CD5211V1F","BaseBoardSerialNumber":"PTMYQ038JKZ4BF","Operating System Image":"24WWSE5Z604#SABT#DABT","Installed OS version":"25H2 (10.0.26200)"}; // Workaround until we fix data with language agnostic strings
+        var summaryData = [{"Id":"e7d2b1a9-5f4c-4823-a91d-6b3c5e8f2a14","Name":"Initial Discovery","Instance":"","TotalRunTime":"00:00:00","TotalRuns":1,"LastResult":"ExecutionPassed","LastRunResultType":7},{"Id":"b088469f-b159-4d7e-b4f9-0f1ed77a95aa","Name":"Battery Health Monitor","Instance":"AE03041XL - Primary","TotalRunTime":"00:00:35","TotalRuns":1,"LastResult":"ExecutionPassed","LastRunResultType":7}];
+        var button = document.getElementById('Expand');
+        button.innerHTML = "ExpandCollapse";
+
+        var button = document.getElementById('SaveFiles');
+        button.innerHTML = "SaveLogFiles";
+        //appendHeaderData(data['PlatformInfo']); // Workaround until we fix data with language agnostic strings
+        appendHeaderData(systemInfo);
+
+        if (platform['AgentSession']) {
+            var nodeToCreate = document.createElement("span");
+            nodeToCreate.id = platform['AgentSession'];
+            nodeToCreate.className = 'bold';
+            nodeToCreate.innerHTML = "<b>" + "AgentID" + ":" + "</b>" + platform['AgentSession'] + "</br>";
+            document.getElementById("productInfoContainer").appendChild(nodeToCreate);
+        }
+        if (platform['CsoSession']) {
+            var nodeToCreate = document.createElement("span");
+            nodeToCreate.id = platform['CsoSession'];
+            nodeToCreate.className = 'bold';
+            nodeToCreate.innerHTML = "<b>" + "CSONumber" + ":" + "</b>" + platform['CsoSession'] + "</br>" + "</br>" + "</br>";
+            document.getElementById("productInfoContainer").appendChild(nodeToCreate);
+        }
+        document.getElementById('Header').innerHTML = platform['ExeName'] +  "<br />" + "SessionLog";
+        document.getElementById('Title').innerHTML = data['ExeName'] + 'SessionLog';
+        createTables(summaryData, data);
+    }
+    function appendHeaderData(platforminfo) {
+        for (var i in platforminfo) {
+            if (platforminfo[i]) {
+                var nodeToCreate = document.createElement("span");
+                nodeToCreate.id = i;
+                nodeToCreate.className = 'bold';
+                nodeToCreate.innerHTML = "<div class='list-item-background even-space-row' style='max-width: 450px;'> <div class='col-xs-6 even-space-col'><span style='font-weight: bold;'>" + i + "</span></div>" + "<div class='col-xs-6 even-space-col' style='border-left: 1px solid #ddd;'>" + platforminfo[i] + "</div></div>";
+                document.getElementById("productInfoContainer").appendChild(nodeToCreate);
+            }
+        }
+    }
+    function createTables(summaryData, entries) {
+        for (var i = 0; i < summaryData.length; i++) {
+            var table = document.createElement('table');
+            var tablerow = table.insertRow(-1);
+            tablerow.className = "uefiBlue";
+
+            var newTh = document.createElement('th');
+            newTh.innerHTML = "Name";
+            newTh.style.width = "100px";
+            tablerow.appendChild(newTh);
+
+            newTh = document.createElement('th');
+            //newTh.innerHTML = "Total Runs Conducted";
+            newTh.innerHTML = "Runs";
+            newTh.style.width = "35px";
+            tablerow.appendChild(newTh);
+
+            newTh = document.createElement('th');
+            newTh.innerHTML = "Result";
+            newTh.style.width = "50px";
+            tablerow.appendChild(newTh);
+
+            newTh = document.createElement('th');
+            newTh.innerHTML = "Runtime";
+            newTh.style.width = "40px";
+            tablerow.appendChild(newTh);
+
+            newTh = document.createElement('th');
+            newTh.innerHTML = "Details";
+            tablerow.appendChild(newTh);
+            newTh.style.width = "40px";
+            table.appendChild(tablerow);
+
+            document.getElementById("tablesContainer").appendChild(table);
+            var newrow = table.insertRow(-1);
+            var stressorname = newrow.insertCell(0);
+            stressorname.innerHTML = summaryData[i]['Name'] + ' (' +entries[i]['Instance'] +')';
+            stressorname.className = "AlignCenter";
+            var totalruns = newrow.insertCell(1);
+            totalruns.innerHTML = summaryData[i]['TotalRuns'];
+            totalruns.className = "AlignCenter";
+            var result = newrow.insertCell(2);
+            var resultToAdd = getResult(summaryData[i]['LastResult']);
+            result.innerHTML = resultToAdd;
+            result.id = summaryData[i]['LastResult'];
+            var className = getResultTypeClass(summaryData[i]['LastRunResultType']);
+            result.className = "AlignCenter " + className;
+            var totalruntime = newrow.insertCell(3);
+            totalruntime.innerHTML = summaryData[i]['TotalRunTime'];
+            totalruntime.className = "AlignCenter";
+            var buttonrow = newrow.insertCell(4);
+            buttonrow.className = "AlignCenter";
+            var button = document.createElement('button');
+            button.id = 'tog' + summaryData[i]['Id'];
+            button.innerHTML = "Show";
+            //NEW
+            button.Tag =i;
+            button.onclick = function () {
+                var testName = this.id.substring(3, this.id.length);
+                toggleTable('tbl'+ this.Tag, testName);
+            }
+            buttonrow.appendChild(button);
+            createResultHeaderRow(summaryData[i],i);
+            for (var k = 0; k < entries.length; k++) {
+                if (entries[k]['Id'] == summaryData[i]['Id'] && entries[k]['Instance'] == summaryData[i] ['Instance']) {
+                    var entry = entries[k]['ToolName'];
+                    var entry2 = summaryData[i]['Name'];
+                    createLogTables(entries[k], i, k); //NEW
+                }
+            }
+            table.appendChild(newrow);
+            var linebreak = document.createElement('p');
+            document.getElementById("tablesContainer").appendChild(linebreak);
+        }
+    }
+    function createResultHeaderRow(summaryData,i) {
+        var newtable = document.createElement('table');
+        newtable.id = 'tbl'+ i;
+        newtable.style.display = 'none';
+        var tablerow = document.createElement('tr');
+        tablerow.className = "Overlap";
+
+        var newTh = document.createElement('th');
+        newTh.innerHTML = "Name";
+        tablerow.appendChild(newTh);
+
+        newTh = document.createElement('th');
+        newTh.innerHTML = "Instance";
+        tablerow.appendChild(newTh);
+
+        newTh = document.createElement('th');
+        newTh.innerHTML = "Version";
+        tablerow.appendChild(newTh);
+
+        newTh = document.createElement('th');
+        newTh.innerHTML = "StartTime";
+        tablerow.appendChild(newTh);
+
+        newTh = document.createElement('th');
+        newTh.innerHTML = "StopTime";
+        tablerow.appendChild(newTh);
+
+        newTh = document.createElement('th');
+        newTh.innerHTML = "Runtime";
+        tablerow.appendChild(newTh);
+
+        newTh = document.createElement('th');
+        newTh.innerHTML = "ErrorCode";
+        tablerow.appendChild(newTh);
+
+        newTh = document.createElement('th');
+        newTh.innerHTML = "FailureId";
+        tablerow.appendChild(newTh);
+
+        newTh = document.createElement('th');
+        newTh.innerHTML = "Result";
+        tablerow.appendChild(newTh);
+
+        newTh = document.createElement('th');
+        newTh.innerHTML = "DisplayLog";
+        tablerow.appendChild(newTh);
+
+        newtable.appendChild(tablerow);
+        document.getElementById("tablesContainer").appendChild(newtable);
+    }
+
+    function insertCell(newrow, cellNum, innerHtml, className) {
+        newTd = newrow.insertCell(cellNum);
+        newTd.innerHTML = innerHtml;
+        newTd.className = className;         
+        return newTd;
+    }
+    function createLogTables(entry, summary, runid) {
+        var table = document.getElementById('tbl' + summary);
+        var newrow = table.insertRow(-1);
+        var i=0;
+        insertCell(newrow, i++, entry['ToolName'], "AlignCenter");
+        insertCell(newrow, i++, entry['Instance'], "AlignCenter");
+        insertCell(newrow, i++, entry['ToolVersion'], "AlignCenter");
+        insertCell(newrow, i++, entry['FormattedStartTime'], "AlignCenter");
+        insertCell(newrow, i++, entry['FormattedStopTime'], "AlignCenter");
+        insertCell(newrow, i++, entry['FormattedElapsedTime'], "AlignCenter");
+        insertCell(newrow, i++, entry['ErrorCode'], "AlignCenter");
+        insertCell(newrow, i++, entry['FailureId'], "AlignCenter");
+        newTd=insertCell(newrow, i++, getResult(entry['FormattedResult']), "AlignCenter " + getResultTypeClass(entry.ResultType));
+        newTd.id = entry['Result'];
+        newTd = newrow.insertCell(i++);
+        table.appendChild(newrow);
+        if (entry['LogData'] == null || entry['LogData'] == "") {
+            newTd.innerHTML = "";
+        }
+        else {
+            var ssd = entry['ToolName'].substring(0, 3);
+            var button = document.createElement('button');
+
+            button.innerHTML = "ShowLog";
+            button.id = 'tog' + ssd + runid.toString();
+            button.className = "AlignCenter";
+            button.onclick = function () {
+                var idtoToggle = this.id.substring(3, this.id.length);
+                toggleRow(idtoToggle);
+            }
+            newTd.className = "AlignCenter";
+            newTd.appendChild(button);
+            newrow = table.insertRow(-1);
+            newrow.style.display = "none";
+            newrow.id = ssd + runid.toString();
+            newTd = newrow.insertCell(0);
+            var logdata = entry['LogData'];
+            logdata = logdata.replace(/(\r\n|\n|\r)/g, "<br />");
+            newTd.innerHTML = logdata;
+            newTd.id = ssd + runid.toString() + "loginfo";
+            newTd.className = 'AlignLeftFontSize';
+            document.getElementById(ssd + runid.toString() + "loginfo").colSpan = 7;
+            table.appendChild(newrow);
+        }
+    }
+
+    function getResultTypeClass(resultType) {
+        var className = "";
+        if (resultType == 1) {
+            className = "passed";
+        }
+        else if (resultType == 2) {
+            className = "failed";
+        }
+        return className;
+    }
+
+    // TODO: cancel will return passed
+    function getResult(result) {
+        return result;
+        //if (result == "ExecutionFailed")
+        //    return result;
+        //return "ExecutionPassed";
+    }
+    function toggleTable(tname,bname)
+    {
+        var elem=document.getElementById(tname);
+        var button=document.getElementById("tog"+ bname);
+        var hide=elem.style.display =="none";
+        if (hide) {
+            elem.style.display="table";
+            button.innerHTML = "Hide";
+        }
+        else {
+            elem.style.display="none";
+            button.innerHTML = "Show";
+        }
+    }
+
+</script>
+<script type="text/javascript">
+    function toggleRow(Rname)
+    {
+        var elem=document.getElementById(Rname);
+        var button=document.getElementById("tog"+ Rname);
+        var hide = elem.style.display =="none";
+        if (hide) {
+            elem.style.display="";
+            button.innerHTML = "HideLog";
+        }
+        else {
+            elem.style.display="none";
+            button.innerHTML = "ShowLog";
+        }
+    }
+
+    function toggleInfoDisplay() {
+        var elem = document.getElementById("productInfoContainer");
+        var hide=elem.style.display =="none";
+        if (hide) {
+            elem.style.display = "block";
+        }
+        else {
+            elem.style.display = "none";
+        }
+
+        var desiredWidth = window.innerWidth;
+
+        var headerHeight = (document.getElementById("mainNav") || {}).offsetHeight;
+        var windowHeight = window.innerHeight;
+
+        var platformInfoElem = document.getElementById("tablesContainer");
+
+        var elemHeight = document.getElementById("PlatformInfo").offsetHeight;
+
+        var otherHeight = document.getElementById("productInfoContainer").clientHeight;
+
+        var desiredHeight = windowHeight - headerHeight - (elemHeight - platformInfoElem.offsetHeight) - 75;
+
+        platformInfoElem.style.height = desiredHeight + "px";
+    }
+
+</script>
+<html> <body onload = 'AppendData()'>
+<h4 id="Header" style="font-weight: bold; text-align: center;"></h4>
+<div id="PlatformInfo" style="padding-left: 10px; padding-right: 10px;">
+    <div style="float: left; width: 100%; margin-bottom: 10px;">
+        <button onclick="toggleInfoDisplay()" id="Expand">ExpandCollapse</button>
+        <button ng-click="logs.saveFiles()" id='SaveFiles' style='display: none;'>SaveLogFiles</button>
+    </div>
+    <div id="productInfoContainer" style="margin-bottom: 10px;">
+        <div><b>SystemUnderTest</b></div>
+    </div>
+    <div id="tablesContainer" style="overflow: scroll; width: 100%;"></div>
+</div>
+</body>
+</html>
